@@ -1,0 +1,12 @@
+#drag-area {
+    width: 400px;
+    height: 400px;
+    background: green;
+}
+
+.hover {
+    box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    -webkit-box-sizing:border-box;
+    border: 7px dashed #53868B;
+}
