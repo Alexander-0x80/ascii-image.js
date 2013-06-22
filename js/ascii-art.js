@@ -1,33 +1,37 @@
 
-var AsciiImg = function(){
-    this.canvas = document.createElement("canvas");
-    this.context = this.canvas.getContext("2d");
-    this.width = null;
-    this.height = null;
-    this.imageData = null;
-    this.newImageData = null;
-    this.resultData = null;
-    this.fontSize = "8px";
-    this.text_width = 5;
-    this.text_height = 8;
-};
+var AsciiImg = function(imageElement){
+    "use strict";
 
-AsciiImg.prototype = {
-    loadImage: function(image){
-        
-        this.canvas.width = image.width;
-        this.canvas.height = image.height;
-        this.width = image.width;
-        this.height = image.height;
-        this.context.drawImage(image, 0, 0);
+    /* Make sure we got an image */
+    if (!imageElement || imageElement.tagName != "IMG") {
+        return false;
+    }
+
+    var canvas = document.createElement("canvas"),
+        context = canvas.getContext("2d"),
+        width = null,
+        height = null,
+        imageData = null,
+        tempImageData = null,
+        resultData = null,
+        fontSize = "8px",
+        text_width = 5,
+        text_height = 8,
+
+    loadImage = function(image){
+        canvas.width = image.width;
+        canvas.height = image.height;
+        width = image.width;
+        height = image.height;
+        context.drawImage(image, 0, 0);
     },
 
-    getPixelData: function(){
+    getPixelData = function(){
         var data = [];
-        var image = this.context.getImageData(0, 0, this.width, this.height).data;
+        var image = context.getImageData(0, 0, width, height).data;
         for (var i=0; i<image.length; i+=4){
-            var y = Math.floor(i / (this.width * 4));
-            var x = (i - (y * this.width * 4)) / 4;
+            var y = Math.floor(i / (width * 4));
+            var x = (i - (y * width * 4)) / 4;
             if (typeof data[x] === "undefined") {
                 data[x] = [];
             }
@@ -39,76 +43,58 @@ AsciiImg.prototype = {
                 a: image[i+3]
             }
         }
-
-        this.imageData = data;
-        //return data;
+        imageData = data;
     },
 
-    getCharPixelsList: function(){
+    getCharPixelsList = function(){
         var data = [];
-        var tw = this.text_width;
-        var th = this.text_height;
-        var newX = this.width / tw;
-        var newY = this.height / th;
+        var newX = width / text_width;
+        var newY = height / text_height;
 
         for(var y=0; y<newY; y++){
             for (var x=0; x<newX; x++){
                 data[data.length] = {
-                    x: x*tw,
-                    y: y*th,
-                    r: this.imageData[x*tw][y*th].r,
-                    g: this.imageData[x*tw][y*th].g,
-                    b: this.imageData[x*tw][y*th].b,
-                    a: this.imageData[x*tw][y*th].a
+                    x: x*text_width,
+                    y: y*text_height,
+                    r: imageData[x*text_width][y*text_height].r,
+                    g: imageData[x*text_width][y*text_height].g,
+                    b: imageData[x*text_width][y*text_height].b,
+                    a: imageData[x*text_width][y*text_height].a
                 };
             }
         }
 
-        this.newImageData = data;
+        tempImageData = data;
     },
 
-    generateResultImage: function(){
-        this.context.clearRect(0, 0, this.width, this.height);
-        this.context.fillStyle = "#00";
-        this.context.fillRect(0, 0, this.width, this.height);
+    generateResultImage = function(){
+        context.clearRect(0, 0, width, height);
+        context.fillStyle = "#00";
+        context.fillRect(0, 0, width, height);
 
-        for (var i=0; i<this.newImageData.length; i++){
-            var px = this.newImageData[i];
-            this.context.fillStyle = "rgba("+ px.r +","+ px.g +","+ px.b +","+ px.a +")";
-            this.context.font = this.fontSize + " Monospace";
-            this.context.fillText("B",px.x, px.y);
+        for (var i=0; i<tempImageData.length; i++){
+            var px = tempImageData[i];
+            context.fillStyle = "rgba("+ px.r +","+ px.g +","+ px.b +","+ px.a +")";
+            context.font = fontSize + " Monospace";
+            context.fillText("@", px.x, px.y);
         }
 
-        this.resultData = this.canvas.toDataURL();
-    }
+        resultData = canvas.toDataURL();
+    };
 
-}
+    /* Populate constructor */
+    loadImage(imageElement);
+    getPixelData();
+    getCharPixelsList();
+    generateResultImage();
 
+    return {
+        convertElement: function(){
+            imageElement.src = resultData;
+        },
 
-
-
-var getResult = function(list,cnv, w, h){
-    var ctx = cnv.getContext("2d");
-    ctx.clearRect(0, 0, w, h);
-    ctx.fillStyle = "#00";
-    ctx.fillRect(0, 0, w, h);
-
-    for (var i=0; i<list.length; i++){
-        var px = list[i];
-        ctx.fillStyle = "rgba("+ px.r +","+ px.g +","+ px.b +","+ px.a +")";
-        ctx.font = "8px Monospace";
-        ctx.fillText("$", px.x, px.y);
-    }
-
-    return cnv.toDataURL();
-}
-
-
-
-
-
-
-
-
-
-
+        getImageData: function(){
+            return resultData;
+        }
+    };
+};

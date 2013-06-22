@@ -19,12 +19,7 @@ onDragOver = function(e){
 },
 
 onConvertClick = function(e){
-    cnv_img = new AsciiImg();
-    cnv_img.loadImage(dom.sourceImg);
-    cnv_img.getPixelData();
-    cnv_img.getCharPixelsList();
-    cnv_img.generateResultImage();
-    dom.resultImg.src = cnv_img.resultData;
+    cnv_img = AsciiImg(dom.sourceImg).convertElement();
 },
 
 displaySrcImg = function(imgData){
