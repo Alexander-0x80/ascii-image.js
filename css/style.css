@@ -1,3 +1,21 @@
+
+body {  
+        background: radial-gradient(ellipse at center, #606c88 0%,#3f4c6b 100%); /* W3C */
+    }  
+      
+    h1 { 
+    font-size: 4em;
+    color: #EEEEEE;
+    font-family: "League Gothic",Impact,sans-serif;
+    letter-spacing: 0.02em;
+    line-height: 0.9em;
+    margin: 0 0 20px;
+    text-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+    text-transform: uppercase;
+    }  
+      
+
+
 #drag-area {
     width: 400px;
     height: 400px;
