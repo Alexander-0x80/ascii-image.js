@@ -2,9 +2,7 @@
 
 var dom = {
     dragArea: document.getElementById("drag-area"),
-    canvas: document.getElementById("output"),
     sourceImg: document.getElementById("source-img"),
+    resultImg: document.getElementById("result-img"),
     convertBtn: document.getElementById("convert")
 };
-
-var ctx = dom.canvas.getContext("2d");

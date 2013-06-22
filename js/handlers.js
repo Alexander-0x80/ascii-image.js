@@ -23,7 +23,11 @@ onConvertClick = function(e){
     dom.canvas.height = dom.sourceImg.height;
     ctx.drawImage(dom.sourceImg, 0, 0);
     var pixGrid = getGridData(ctx.getImageData(0, 0, dom.canvas.width,dom.canvas.height).data);
-    console.log(pixGrid);
+    var chSize = generateTextSize("b","8");
+    var avgPixelsList = getPixelsList(pixGrid, dom.canvas.width, dom.canvas.height, chSize[0],chSize[1]);
+    var result = getResult(avgPixelsList,dom.canvas,dom.canvas.width,dom.canvas.height);
+    dom.resultImg.src = result;
+    
 },
 
 displaySrcImg = function(imgData){
@@ -49,5 +53,5 @@ onImageDrop = function(e){
     } catch (ex) {
         console.log(ex);
     }
-}
+};
 
