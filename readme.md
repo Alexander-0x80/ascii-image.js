@@ -10,3 +10,7 @@ See example :
 #### Processed 
 ![sample](/img/sample.png)
 This image is filled with the code of the converter itself .
+
+_sample image by [Bluefley](http://bluefley.deviantart.com/)_
+
+
