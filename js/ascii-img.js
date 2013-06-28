@@ -29,11 +29,14 @@ var AsciiImg = function(imageElement, characters, options){
     },
 
     getCharacter = function(){
-        while(true)
-            for(var i=0; i<chars.length; i++){
-                if (chars[i] == " ") continue;
-                yield chars[i];
+        var currentChar = 0;
+        return function(){
+            if (currentChar >= chars.length){
+                currentChar = 0;
             }
+
+            return chars[currentChar++]; 
+        }
     },
 
     getPixelData = function(){
@@ -79,16 +82,19 @@ var AsciiImg = function(imageElement, characters, options){
     },
 
     generateResultImage = function(){
-        var characters = getCharacter();
+        var nextChar = getCharacter();
+        //var characters = getCharacter();
         context.clearRect(0, 0, width, height);
         context.fillStyle = "#00";
         context.fillRect(0, 0, width, height);
 
         for (var i=0; i<tempImageData.length; i++){
+            var n = nextChar();
+            console.log(n);
             var px = tempImageData[i];
             context.fillStyle = "rgba("+ px.r +","+ px.g +","+ px.b +","+ px.a +")";
             context.font = fontSize + " Monospace";
-            context.fillText(characters.next(), px.x, px.y);
+            context.fillText(n, px.x, px.y);
         }
 
         resultData = canvas.toDataURL();

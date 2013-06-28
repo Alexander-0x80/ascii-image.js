@@ -6,7 +6,8 @@
 var dom = {
     dragArea: document.getElementById("drag-area"),
     sourceImg: document.getElementById("source-img"),
-    convertBtn: document.getElementById("convert")
+    convertBtn: document.getElementById("convert"),
+    fillText: document.getElementById("filltext")
 };
 
 /* Handlers */
@@ -14,13 +15,11 @@ var dom = {
 var onDragEnter = function(e){
     e.preventDefault();
     e.stopPropagation();
-    this.classList.add("hover");
 },
 
 onDragLeave = function(e){
     e.preventDefault();
     e.stopPropagation();
-    this.classList.remove("hover");
 },
 
 onDragOver = function(e){
@@ -29,7 +28,7 @@ onDragOver = function(e){
 },
 
 onConvertClick = function(e){
-    cnv_img = AsciiImg(dom.sourceImg,"function(){for(var i=0;i<str.length;i++)").convertElement();
+    cnv_img = AsciiImg(dom.sourceImg,dom.fillText.value).convertElement();
 },
 
 displaySrcImg = function(imgData){
