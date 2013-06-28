@@ -1,10 +1,10 @@
 
 body {  
-        background: #CFCFCF;
+    background: #CFCFCF;
 }
 
 body > div {
-    width:50%;
+    width: 50%;
 }  
 
 button {
@@ -17,8 +17,8 @@ button {
     background: #999999;
     padding: 40px 0;
     border: 2px dashed #7F7F7F;
-    color:white;
-    text-align:center;
+    color: white;
+    text-align: center;
     font-size: 2em;
     font-weight: bold;
 }

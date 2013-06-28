@@ -31,10 +31,9 @@ var AsciiImg = function(imageElement, characters, options){
     getCharacter = function(){
         var currentChar = 0;
         return function(){
-            if (currentChar >= chars.length){
-                currentChar = 0;
-            }
-
+            /* Discard Whitespaces, Tabs, Newlines , etc .. */
+            while(/\s/.test(chars[currentChar])) currentChar++;
+            if (currentChar >= chars.length) currentChar = 0;
             return chars[currentChar++]; 
         }
     },
@@ -83,18 +82,15 @@ var AsciiImg = function(imageElement, characters, options){
 
     generateResultImage = function(){
         var nextChar = getCharacter();
-        //var characters = getCharacter();
         context.clearRect(0, 0, width, height);
         context.fillStyle = "#00";
         context.fillRect(0, 0, width, height);
 
         for (var i=0; i<tempImageData.length; i++){
-            var n = nextChar();
-            console.log(n);
             var px = tempImageData[i];
             context.fillStyle = "rgba("+ px.r +","+ px.g +","+ px.b +","+ px.a +")";
             context.font = fontSize + " Monospace";
-            context.fillText(n, px.x, px.y);
+            context.fillText(nextChar(), px.x, px.y);
         }
 
         resultData = canvas.toDataURL();
